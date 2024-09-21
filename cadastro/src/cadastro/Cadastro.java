@@ -54,7 +54,7 @@ class Cliente {
 	}
 	
 	public String toString() {
-	    return String.format("Cliente{id=%d, nome='%s', idade=%d, endereco='%s', telefone='%s'}", 
+	    return String.format("Cliente %d, nome: %s, idade: %d, endereco: %s, telefone: %s", 
 	            getId(), nome, idade, endereco, telefone);
 	}
 	
@@ -106,6 +106,45 @@ class CadastroClientes {
 		}
 		return null;
 	}
+	
+	public boolean update(String nome, Cliente novoCliente) {
+	    Node atual = head;
+	    while (atual != null) {
+	        if (atual.cliente.getNome().equals(nome) || 
+	            Integer.toString(atual.cliente.getId()).equals(nome)) {
+	            novoCliente.setId(atual.cliente.getId()); 
+	            atual.cliente = novoCliente; 
+	            return true;
+	        }
+	        atual = atual.next;
+	    }
+	    return false;
+	}
+	
+	public boolean remove(String nome) {
+		if (head == null) return false;
+		if (head.cliente.getNome().equals(nome)) {
+			head = head.next;
+		    return true;
+		}
+		Node atual = head;
+		while (atual.next != null) {
+		    if (atual.next.cliente.getNome().equals(nome)) {
+		    	atual.next = atual.next.next;
+		        return true;
+		    }
+		    atual = atual.next;
+		}
+		return false;
+	}
+	
+	  public void display() {
+		Node atual = head;
+		while (atual != null) {
+			System.out.println(atual.cliente);
+			atual = atual.next;
+		}
+	  }
 }
 
 public class Cadastro {
@@ -196,14 +235,86 @@ public class Cadastro {
 			    break;
 			case 3:
 				System.out.println("Para atualizar cliente por nome, digite 1.");
-				System.out.println("Para atualizar cliente por id, digite 2.");
-				break;
+			    System.out.println("Para atualizar cliente por id, digite 2.");
+			    int buscaOpcao = sc.nextInt();
+			    sc.nextLine();
+			    Cliente cliente = null;
+
+			    if (buscaOpcao == 1) {
+			        System.out.print("Nome do cliente a atualizar: ");
+			        nome = sc.nextLine();
+			        cliente = cadastro.get(nome, true);
+			    } else if (buscaOpcao == 2) {
+			        System.out.print("ID do cliente a atualizar: ");
+			        String id = sc.nextLine();
+			        cliente = cadastro.get(id, false);
+			    } else {
+			        System.out.println("Opção inválida.");
+			        break;
+			    }
+
+			    if (cliente != null) {
+			        System.out.print("Novo Nome: ");
+			        String novoNome = sc.nextLine();
+			        System.out.print("Nova Idade: ");
+			        int novaIdade = sc.nextInt();
+			        sc.nextLine(); 
+			        System.out.print("Novo Endereço: ");
+			        String novoEndereco = sc.nextLine();
+			        System.out.print("Novo Telefone: ");
+			        String novoTelefone = sc.nextLine();
+			        
+			        cliente.setNome(novoNome);
+			        cliente.setIdade(novaIdade);
+			        cliente.setEndereco(novoEndereco);
+			        cliente.setTelefone(novoTelefone);
+			        
+			        boolean atualizado = cadastro.update(cliente.getNome(), cliente);
+			        if (atualizado) {
+			            System.out.println("Cliente atualizado com sucesso.");
+			        } else {
+			            System.out.println("Cliente não encontrado.");
+			        }
+			    } else {
+			        System.out.println("Cliente não encontrado.");
+			    }
+			    break;
 			case 4:
 				System.out.println("Para remover cliente por nome, digite 1.");
-				System.out.println("Para remover cliente por id, digite 2.");
-				break;
+			    System.out.println("Para remover cliente por id, digite 2.");
+			    int removeOpcao = sc.nextInt();
+			    sc.nextLine();
+
+			    if (removeOpcao == 1) {
+			        System.out.print("Nome do cliente a remover: ");
+			        nome = sc.nextLine();
+			        boolean removido = cadastro.remove(nome);
+			        if (removido) {
+			            System.out.println("Cliente removido com sucesso.");
+			        } else {
+			            System.out.println("Cliente não encontrado.");
+			        }
+			    } else if (removeOpcao == 2) {
+			        System.out.print("ID do cliente a remover: ");
+			        String id = sc.nextLine();
+			        Cliente cliente2 = cadastro.get(id, false);
+			        if (cliente2 != null) {
+			            boolean removido = cadastro.remove(cliente2.getNome());
+			            if (removido) {
+			                System.out.println("Cliente removido com sucesso.");
+			            } else {
+			                System.out.println("Cliente não encontrado.");
+			            }
+			        } else {
+			            System.out.println("Cliente não encontrado.");
+			        }
+			    } else {
+			        System.out.println("Opção inválida.");
+			    }
+			    break;
 			case 5:
 				System.out.println("Lista de clientes cadastrados:");
+				cadastro.display();
 				break;
 			case 6:
 				sc.close();
