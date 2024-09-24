@@ -1,6 +1,7 @@
 //Antony Matheus da Silva Reis
 //Cinthya Mayumi Kuniyoshi
 //Giovanna Santos Carlos
+//https://trello.com/invite/b/66ef1bf9a8186b2cf5d311b3/ATTI43802cab136cb9fbd9a37f4e3d8914f4C04C75A5/poo
 
 package cadastro;
 import java.util.Scanner;
@@ -142,13 +143,17 @@ class CadastroClientes {
 		return false;
 	}
 	
-	  public void display() {
-		Node atual = head;
-		while (atual != null) {
-			System.out.println(atual.cliente);
-			atual = atual.next;
-		}
-	  }
+	public void display() {
+	    if (head == null) {
+	        System.out.println("Não existem clientes cadastrados.");
+	    } else {
+	        Node atual = head;
+	        while (atual != null) {
+	            System.out.println(atual.cliente);
+	            atual = atual.next;
+	        }
+	    }
+	}
 }
 
 public class Cadastro {
