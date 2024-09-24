@@ -1,3 +1,7 @@
+//Antony Matheus da Silva Reis
+//Cinthya Mayumi Kuniyoshi
+//Giovanna Santos Carlos
+
 package cadastro;
 import java.util.Scanner;
 
